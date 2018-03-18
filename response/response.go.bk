@@ -1,0 +1,28 @@
+package response
+
+import (
+	"encoding/json"
+	"net/http"
+)
+
+// create error response data
+func ErrRespond(w http.ResponseWriter, r *http.Request, status int, data interface{}) {
+	Respond(w, r, status, map[string]interface{}{
+		"status":  "401",
+		"message": "error message",
+	})
+}
+
+func SuccessRespond(w http.ResponseWriter, r *http.Request, status int, data interface{}) {
+	Respond(w, r, status, map[string]interface{}{
+		"status":  "200",
+		"message": "success message",
+		"result":  data,
+	})
+}
+
+// create response data
+func Respond(w http.ResponseWriter, r *http.Request, status int, data interface{}) error {
+	w.WriteHeader(status)
+	return json.NewEncoder(w).Encode(data)
+}
